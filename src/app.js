@@ -6,7 +6,7 @@ import serveradd from "./route.js"
 
 const serv = express()
 serv.use(cors())
-serv.use(express.json())
+serv.use(express.json({ limit:"10mb" }))
 
 serveradd(serv)
 

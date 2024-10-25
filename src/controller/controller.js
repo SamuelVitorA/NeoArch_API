@@ -41,6 +41,45 @@ endpoint.get("/logar", async (req, resp) => {
     }
 })
 
+endpoint.get("/verinfo", async (req, resp) => {
+    try{
+        let informaçoes = req.query
+
+        let resposta = await db.pegarinfo(informaçoes)
+        if (resp) {
+            resp.send(resposta)
+        }
+        else {
+            resp.send("Não conseguimos adicionar um novo usuário")
+        }
+    }
+    catch(err){
+        resp.status(400).send({
+            erro: err.message
+        })
+    }
+})
+
+endpoint.get("/verinfo/img", async (req, resp) => {
+    try{
+        let informaçoes = req.query
+
+        let resposta = await db.img(informaçoes)
+        if (resp) {
+            resp.send(resposta)
+        }
+        else {
+            resp.send("Não conseguimos adicionar um novo usuário")
+        }
+    }
+    catch(err){
+        resp.status(400).send({
+            erro: err.message
+        })
+    }
+})
+
+
 endpoint.get( "/listar/pedidos" , async ( req, resp ) => {
     try {
         let lista = req.body

@@ -16,14 +16,21 @@ export async function registrarUsuario(usuario) {
 }
 
 export async function logarUsuario(usuario) {
-    const command = "select * from tb_user_settings where email = ? and senha = ?"
-    let [[resposta]] = await con.query(command, [usuario.email, usuario.senha]) 
-    return resposta
+    const command = "select * from tb_user_settings where id_personal = ?"
+    let resposta = await con.query(command, [id.id]) 
+    return resposta[0][0]
+
+}
+
+export async function pegarinfo(id) {
+    const command = "select * from tb_user_settings where id_personal = ?"
+    let resposta = await con.query(command, [id.id]) 
+    return resposta[0][0]
 }
 
 export async function alterarUsuario(id, usuario) {
-    const command = "update tb_user_settings set nome = ?, cpf = ?, endereco = ?, email = ?, telefone = ?, senha = ? where id_personal = ?"
-    let [resposta] = await con.query(command, [usuario.nome, usuario.cpf, usuario.endereco, usuario.email, usuario.telefone, usuario.senha, id.id])
+    const command = "update tb_user_settings set foto = ?, nome = ?, cpf = ?, endereco = ?, email = ?, telefone = ?, senha = ? where id_personal = ?"
+    let [resposta] = await con.query(command, [usuario.foto, usuario.nome, usuario.cpf, usuario.endereco, usuario.email, usuario.telefone, usuario.senha, id.id])
     return {Foi_alterado: resposta.changedRows}
 }
 /*
@@ -42,6 +49,11 @@ body {
 
 
 ////////////////////////////////////////////////////////////////
+export async function img(imagem) {
+    const command = "select foto from tb_user_settings where id_personal = ?"
+    let resposta = await con.query(command, [imagem.id]) 
+    return resposta[0][0]
+}
 
 
 // Pedidos
