@@ -22,7 +22,7 @@ endpoint.post("/registro", async (req, resp) => {
     }
 })
 
-endpoint.get("/logar", async (req, resp) => {
+endpoint.post("/logar", async (req, resp) => {
     try{
         let user_verificar = req.body
 

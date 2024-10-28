@@ -16,8 +16,11 @@ export async function registrarUsuario(usuario) {
 }
 
 export async function logarUsuario(usuario) {
-    const command = "select * from tb_user_settings where id_personal = ?"
-    let resposta = await con.query(command, [id.id]) 
+    const command = `select id_personal, email, senha 
+                     from tb_user_settings
+                     where email = ?
+                     and senha = ?;`
+    let resposta = await con.query(command, [usuario.email, usuario.senha]) 
     return resposta[0][0]
 
 }
