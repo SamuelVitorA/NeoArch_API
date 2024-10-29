@@ -25,6 +25,14 @@ export async function logarUsuario(usuario) {
 
 }
 
+export async function confirmarEmail(usuario) {
+    const command = `select email
+                     from tb_user_settings
+                     where email = ?;`
+    let resposta = await con.query(command, [usuario.email]) 
+    return resposta[0][0]
+}
+
 export async function pegarinfo(id) {
     const command = "select * from tb_user_settings where id_personal = ?"
     let resposta = await con.query(command, [id.id]) 
@@ -56,6 +64,14 @@ export async function img(imagem) {
     const command = "select foto from tb_user_settings where id_personal = ?"
     let resposta = await con.query(command, [imagem.id]) 
     return resposta[0][0]
+}
+
+export async function trocarSenha(id, usuario) {
+    const command = `update tb_user_settings
+                     set senha = ?
+                     where id_personal = ?;`
+    let [resposta] = await con.query(command, [usuario.senha, id.id])
+    return {Foi_alterado: resposta.changedRows}
 }
 
 

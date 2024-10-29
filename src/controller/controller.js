@@ -41,6 +41,26 @@ endpoint.post("/logar", async (req, resp) => {
     }
 })
 
+endpoint.post("/confirmarEmail", async (req, resp) => {
+    try{
+        let user_verificar = req.body
+
+        let resposta = await db.confirmarEmail(user_verificar)
+        if (resp) {
+            resp.send(resposta)
+        }
+        else {
+            resp.send("Não conseguimos adicionar um novo usuário")
+        }
+    }
+    catch(err){
+        resp.status(400).send({
+            erro: err.message
+        })
+    }
+})
+
+
 endpoint.get("/verinfo", async (req, resp) => {
     try{
         let informaçoes = req.query
@@ -107,6 +127,27 @@ endpoint.put("/alterar", async (req, resp) => {
         let id_user_alterado = req.query
 
         let resposta = await db.alterarUsuario(id_user_alterado, user_alterado)
+        if (resp) {
+            resp.send(resposta)
+        }
+        else {
+            resp.send(`Não conseguimos excluir o usuario ${user_excluido}`)
+        }
+    }
+    catch(err){
+        resp.status(400).send({
+            erro: err.message
+        })
+    }
+})
+
+
+endpoint.put("/trocarSenha", async (req, resp) => {
+    try{
+        let user_alterado = req.body
+        let id_user_alterado = req.query
+
+        let resposta = await db.trocarSenha(id_user_alterado, user_alterado)
         if (resp) {
             resp.send(resposta)
         }
