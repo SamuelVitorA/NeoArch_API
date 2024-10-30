@@ -12,4 +12,4 @@ User: ${process.env.USER}
 Senha: ${process.env.PSW}
 `)
 
-export default con
+export default con;
