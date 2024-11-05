@@ -165,8 +165,9 @@ endpoint.put("/trocarSenha", async (req, resp) => {
 endpoint.put( "/editar/pedidos", async ( req, resp ) => {
     try {
         let pedido_alterado = req.body
+        let id = req.query
 
-        let resposta = await db.alterarPedidos( pedido_alterado )
+        let resposta = await db.alterarPedidos( pedido_alterado, id )
 
         if(resp) {
             resp.send(resposta)
@@ -195,6 +196,25 @@ endpoint.delete("/deletar", async (req, resp) => {
         }
         else {
             resp.send(`Não conseguimos excluir o usuario ${user_excluido}`)
+        }
+    }
+    catch(err){
+        resp.status(400).send({
+            erro: err.message
+        })
+    }
+})
+
+endpoint.post("/inserir/pedido", async (req, resp) => {
+    try{
+        let novo_pedido = req.body
+
+        let resposta = await db.inserirpedido(novo_pedido)
+        if (resp) {
+            resp.send('pedido inserido')
+        }
+        else {
+            resp.send("Não conseguimos adicionar um novo usuário")
         }
     }
     catch(err){

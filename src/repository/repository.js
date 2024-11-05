@@ -99,23 +99,7 @@ body: {
 }
 */
 
-export async function alterarPedidos(pedido) {
-    const command = `
-        update tb_agendamentos_orders
-          set   nome = ?,
-                preco = ?,
-                comeco = ?,
-                fim = ?,
-                telefone = ?,
-                email = ?,
-                telefone_opc = ?,
-                email_opc = ?,
-                imagem = ?
-        where id_agendamento = ?;
-    `
-    let [ resposta ] = await con.query( command, [ pedido.nome, pedido.preco, pedido.comeco, pedido.fim, pedido.telefone, pedido.email, pedido.telefone_opc, pedido.email_opc, pedido.imagem ] )
-    return {Edit_Pedidos: resposta};
-}
+
 /*
 body{
 
@@ -164,4 +148,35 @@ export async function alterarDados( id, atual ) {
     `
     let [ resposta ] = await con.query( command [ atual.nome, atual.cpf, atual.endereco, atual.email, atual.telefone, atual.senha, atual.imagem, id.id ] )
     return {Alter_personal: resposta}
+}
+
+export async function inserirpedido(usuario) {
+    const command = "insert into adm_orders_tb_agendamentos(nome, preco, comeco, fim, telefone, email, telefone_opc, email_opc ) values(?,?,?,?,?,?,?,?)"
+    let [resposta] = await con.query(command, [usuario.nome, usuario.preco, usuario.comeco, usuario.fim, usuario.telefone, usuario.email, usuario.telefone2, usuario.email2]) 
+    return resposta
+}
+
+export async function verpedido() {
+    const command = `select *
+                     from adm_orders_tb_agendamentos;`
+    let resposta = await con.query(command) 
+    return resposta[0][0]
+
+}
+
+export async function alterarPedidos(pedido, id) {
+    const command = `
+        update tb_agendamentos_orders
+          set   nome = ?,
+                preco = ?,
+                comeco = ?,
+                fim = ?,
+                telefone = ?,
+                email = ?,
+                telefone_opc = ?,
+                email_opc = ?
+        where id_agendamento = ?;
+    `
+    let [ resposta ] = await con.query( command, [ pedido.nome, pedido.preco, pedido.comeco, pedido.fim, pedido.telefone, pedido.email, pedido.telefone_opc, pedido.email_opc, id.id] )
+    return {Edit_Pedidos: resposta};
 }
