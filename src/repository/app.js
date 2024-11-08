@@ -2,8 +2,10 @@ import con from "../core/connection.js";
 
 export async function createOrder(order) {
     try {
+
         const command = `insert into tb_agendamentos_orders (nome, preco, comeco, fim, telefone, email, telefone_opc, email_opc) values (?, ?, ?, ?, ?, ?, ?, ?)`; 
         let [response] = await con.query(command, [order.nome, order.preco, order.comeco, order.fim, order.telefone, order.email, order.telefone_opc, order.email_opc]);
+
         return { orderId: response.insertId };
     } catch (error) {
         console.error(error);
@@ -27,7 +29,9 @@ export async function createOrder(order) {
 export async function listOrders() {
     try {
         const command = `select * from tb_agendamentos_orders;`;
+
         let [response] = await con.query(command);
+
         return response;
     } catch (error) {
         console.error(error);
@@ -37,8 +41,8 @@ export async function listOrders() {
 
 export async function updateOrder(order, id) {
     try {
-        const command = `update tb_agendamentos_orders set nome = ?, preco = ?, comeco = ?, fim = ?, telefone = ?, email = ?, telefone_opc = ?, email_opc = ?, imagem = ? where id_agendamento = ?;`;
-        let [response] = await con.query(command, [order.nome, order.preco, order.comeco, order.fim, order.telefone, order.email, order.telefone_opc, order.email_opc, order.imagem, id]);
+        const command = `update tb_agendamentos_orders set nome = ?, preco = ?, comeco = ?, fim = ?, telefone = ?, email = ?, telefone_opc = ?, email_opc = ? where id_agendamento = ?;`;
+        let [response] = await con.query(command, [order.nome, order.preco, order.comeco, order.fim, order.telefone, order.email, order.telefone_opc, order.email_opc, id]);
         return { updatedRows: response.changedRows };
     } catch (error) {
         console.error(error);
