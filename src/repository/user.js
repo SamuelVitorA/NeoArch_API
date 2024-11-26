@@ -33,9 +33,16 @@ export async function createUser(register) {
 
 export async function deleteUser(id) {
     try {
-        const command = `delete from tb_user_settings where id_personal = ?`
-        let [ response ] = await con.query(command, [ id ])    
-        return response.insertId
+        let [ [ is_last ] ] = await con.query(`select count(*) from tb_user_settings`)
+        
+        if (is_last["count(*)"] > 1) {
+            const command = `delete from tb_user_settings where id_personal = ?`
+            let [ response ] = await con.query(command, [ id ])    
+            return response.insertId
+        }
+        else {
+            return 'Só há um usuário, impossivel excluir essa conta, crie outra para possibilitar exclusão.'
+        }
     }
     catch (error) {
         console.error(error);
@@ -58,8 +65,8 @@ export async function getUserInfo( id ) {
 
 export async function updateUser( id, data ) {
     try {     
-        const command = `update tb_user_settings set nome = ?, cpf = ?, endereco = ?, email = ?, telefone = ?, senha = ?, foto = ? where id_personal = ?`;
-        let [resposta] = await con.query(command, [data.nome, data.cpf, data.endereco, data.email, data.telefone, data.senha, data.imagem, id]);        
+        const command = `update tb_user_settings set nome = ?, cpf = ?, endereco = ?, email = ?, telefone = ?, senha = ? where id_personal = ?`;
+        let [resposta] = await con.query(command, [data.nome, data.cpf, data.endereco, data.email, data.telefone, data.senha, id]);        
     
         return resposta
     }

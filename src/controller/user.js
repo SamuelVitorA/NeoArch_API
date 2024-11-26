@@ -56,7 +56,7 @@ endpoint.delete("/delete", authToken, async (req, resp) => {
     
     let query = await db.deleteUser(user)
 
-    if (query == null) {
+    if (query == null || query == 'Só há um usuário, impossivel excluir essa conta, crie outra para possibilitar exclusão.') {
         resp.send({ error: query })
     } else {
         resp.send({"Delete": "Accont deleted!"})
@@ -77,14 +77,21 @@ endpoint.post("/info", authToken, async (req, resp) => {
 endpoint.put("/update", authToken, async (req, resp) => {
     let user = req.user.id
     let data = req.body
+    data.email = data.email.toLowerCase()
+    let validate_data = {"email": data["email"], "senha": data["senha"]}
 
-    let query = await db.updateUser(user, data)
+    if (validate(validate_data)) {
+        let query = await db.updateUser(user, data)
+        if (query == null || query == "Ocorreu um erro ao pegar as informações do usuário.") {
+            resp.send({ error: query })
+        } else {
+            resp.send({ "Resposta": query })
+        }   
+    }
+    else {
+        resp.send({ error: "Invalid password or email" })
+    }
 
-    if (query == null || query == "Ocorreu um erro ao pegar as informações do usuário.") {
-        resp.send({ error: query })
-    } else {
-        resp.send("Alterado com sucesso")
-    }   
 })
 /*
 {

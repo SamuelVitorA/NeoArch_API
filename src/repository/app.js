@@ -3,8 +3,8 @@ import con from "../core/connection.js";
 export async function createOrder(order) {
     try {
 
-        const command = `insert into tb_agendamentos_orders (nome, preco, comeco, fim, telefone, email, telefone_opc, email_opc) values (?, ?, ?, ?, ?, ?, ?, ?)`; 
-        let [response] = await con.query(command, [order.nome, order.preco, order.comeco, order.fim, order.telefone, order.email, order.telefone_opc, order.email_opc]);
+        const command = `insert into tb_agendamentos_orders (nome, preco, comeco, fim, telefone, email) values (?, ?, ?, ?, ?, ?)`; 
+        let [response] = await con.query(command, [order.nome, order.preco, order.comeco, order.fim, order.telefone, order.email]);
 
         return { orderId: response.insertId };
     } catch (error) {
@@ -20,9 +20,6 @@ export async function createOrder(order) {
     "fim": "",
     "telefone": "",
     "email": ""
-    "telefone_opc": "",
-    "email_opc": "",
-    "imagem": ""
 }
 */
 
@@ -41,8 +38,8 @@ export async function listOrders() {
 
 export async function updateOrder(order, id) {
     try {
-        const command = `update tb_agendamentos_orders set nome = ?, preco = ?, comeco = ?, fim = ?, telefone = ?, email = ?, telefone_opc = ?, email_opc = ? where id_agendamento = ?;`;
-        let [response] = await con.query(command, [order.nome, order.preco, order.comeco, order.fim, order.telefone, order.email, order.telefone_opc, order.email_opc, id]);
+        const command = `update tb_agendamentos_orders set nome = ?, preco = ?, comeco = ?, fim = ?, telefone = ?, email = ? where id_agendamento = ?;`;
+        let [response] = await con.query(command, [order.nome, order.preco, order.comeco, order.fim, order.telefone, order.email, id]);
         return { updatedRows: response.changedRows };
     } catch (error) {
         console.error(error);
